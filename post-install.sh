@@ -5,6 +5,7 @@ set -x
 ## Restore from backup if there is a backup
 if [ -d /backup ]; then
   rsync -arShCiu --include 'wp-config.php' --include 'wp-content**' --include '.htaccess' --exclude '*' /backup/ /var/www/html
+  chown -R www-data wp-content .htaccess wp-config.php
 fi
 
 ## Check if WordPress is already installed
