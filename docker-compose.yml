@@ -1,0 +1,39 @@
+version: '3.1'
+
+services:
+
+  wordpress:
+    build:
+      context: . 
+    restart: always
+    ports:
+      - 8080:80
+    environment:
+      WORDPRESS_DB_HOST: db
+      WORDPRESS_DB_USER: exampleuser
+      WORDPRESS_DB_PASSWORD: examplepass
+      WORDPRESS_DB_NAME: exampledb
+      WORDPRESS_URL: "localhost:8080"
+      WORDPRESS_TITLE: "test wordpress title"
+      WORDPRESS_ADMIN_USER: test
+      WORDPRESS_ADMIN_PASS: test
+      WORDPRESS_ADMIN_EMAIL: test@mailinator.com
+      WORDPRESS_BACKUP: "0 0,6,12,18 * * *"
+    volumes:
+      - wordpress:/var/www/html
+      - backup:/backup
+  db:
+    image: mysql:5.7
+    restart: always
+    environment:
+      MYSQL_DATABASE: exampledb
+      MYSQL_USER: exampleuser
+      MYSQL_PASSWORD: examplepass
+      MYSQL_RANDOM_ROOT_PASSWORD: '1'
+    volumes:
+      - db:/var/lib/mysql
+
+volumes:
+  wordpress:
+  db:
+  backup:

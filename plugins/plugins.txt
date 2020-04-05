@@ -1,0 +1,9 @@
+amp
+jetpack
+official-facebook-pixel
+google-site-kit
+syntaxhighlighter
+wordfence
+easy-wp-smtp
+wordpress-seo
+wp-fastest-cache
