@@ -27,6 +27,10 @@ else
   echo WordPress is already installed.
 fi
 
+## Set the URL of the site based on what is passed
+su -s /bin/bash www-data -c "wp option set siteurl \"${WORDPRESS_URL}\" \
+    && wp option set home \"${WORDPRESS_URL}\"
+
 ## Schedule backup
 if [ -d /backup ]; then
   ##Initial sync to backup
