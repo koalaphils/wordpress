@@ -1,6 +1,5 @@
 # WordPress Installation
 
-##Description
 This repository is to help speedup the installation and restoration of WordPress site using docker. This should help WordPress mainteners to install the plugins and themes that they would normally install across various WordPress sites they maintain.
 
 ### Additional Environment Variables
@@ -22,7 +21,7 @@ The base image for the container is the [wordpress official image](https://hub.d
 The following are the steps it does:
 
 1. The script checks for backup directory and restore it on /var/www/html if there is any
-    1. If the WordPress site is already installed, then it will just sync the `/var/www/html` to the `/backup` directory
+    1. If the WordPress site is already installed, then it will just sync the `/var/www/html` from the `/backup` directory
     1. Otherwise, it will install WordPress.
 1. Installation of WordPress is a series of the following steps:
     1. Install the WordPress core using the new Environment variables specified above
