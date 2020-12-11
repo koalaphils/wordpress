@@ -28,6 +28,16 @@ else
   echo WordPress is already installed.
 fi
 
+## Update WordPress
+echo Updating WordPress
+su -s /bin/bash www-data -c "wp core update"
+su -s /bin/bash www-data -c "wp core update-db"
+## Update Plugins
+echo Updating Plugins
+su -s /bin/bash www-data -c "wp plugin update --all"
+echo Updating Themes
+su -s /bin/bash www-data -c "wp theme update --all"
+
 ## Set the URL of the site based on what is passed
 su -s /bin/bash www-data -c "wp option set siteurl \"${WORDPRESS_URL}\" \
     && wp option set home \"${WORDPRESS_URL}\""
