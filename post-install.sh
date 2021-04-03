@@ -1,6 +1,11 @@
 #!/bin/bash
+set -eux
+
+nc -z ${WORDPRESS_DB_HOST} ${WORDPRESS_DB_PORT:-3306}
+
 set +e
-set -x
+
+mkdir -p /var/www/.wp-cli/cache && chmod ugo+w -R /var/www/.wp-cli/cache
 
 ## Restore from backup if there is a backup
 if [ -d /backup ]; then

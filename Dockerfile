@@ -1,4 +1,4 @@
-FROM koalaphils/php:7.4-fpm
+FROM koalaphils/php:8-fpm
 
 LABEL maintainer="admin@koalaphils.com" \
     version="2.0" \

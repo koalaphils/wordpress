@@ -5,7 +5,7 @@ services:
   wordpress:
     build:
       context: . 
-    restart: always
+    restart: unless-stopped
     environment:
       WORDPRESS_DB_HOST: db
       WORDPRESS_DB_USER: exampleuser
@@ -22,6 +22,7 @@ services:
       - backup:/backup
   nginx:
     image: nginx
+    restart: unless-stopped
     depends_on:
       - wordpress
     environment:
