@@ -41,7 +41,7 @@ jobs:
           key: ${{ runner.os }}-buildx-${{ github.sha }}
           restore-keys: |
             ${{ runner.os }}-buildx-
-      - name: PSGC Laravel API
+      - name: Wordpress
         uses: docker/build-push-action@v2
         with:
           context: ./
@@ -51,4 +51,4 @@ jobs:
           cache-from: type=local,src=/tmp/.buildx-cache
           cache-to: type=local,dest=/tmp/.buildx-cache
           push: true
-          tags: koalaphils/psgc-api:latest
+          tags: koalaphils/wordpress:latest
