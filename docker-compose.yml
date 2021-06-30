@@ -1,9 +1,7 @@
-version: '3.1'
-
 services:
-
   wordpress:
     build:
+      dockerfile: Dockerfile-7.4-fpm
       context: . 
     restart: unless-stopped
     environment:
@@ -17,6 +15,8 @@ services:
       WORDPRESS_ADMIN_PASS: test
       WORDPRESS_ADMIN_EMAIL: test@mailinator.com
       WORDPRESS_BACKUP: "0 0,6,12,18 * * *"
+    depends_on:
+      - db
     volumes:
       - wordpress:/var/www/html
       - backup:/backup
@@ -34,14 +34,14 @@ services:
     ports:
       - '8080:80'
   db:
-    image: mysql:8.0
+    image: mariadb:latest
     restart: always
-    command: --default-authentication-plugin=mysql_native_password
+#    command: --default-authentication-plugin=mysql_native_password
     environment:
       MYSQL_DATABASE: exampledb
       MYSQL_USER: exampleuser
       MYSQL_PASSWORD: examplepass
-      MYSQL_RANDOM_ROOT_PASSWORD: '1'
+      MYSQL_ROOT_PASSWORD: examplepass
     volumes:
       - db:/var/lib/mysql
 

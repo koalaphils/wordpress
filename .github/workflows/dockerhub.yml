@@ -41,14 +41,25 @@ jobs:
           key: ${{ runner.os }}-buildx-${{ github.sha }}
           restore-keys: |
             ${{ runner.os }}-buildx-
-      - name: Wordpress
+      - name: Wordpress 8 FPM
         uses: docker/build-push-action@v2
         with:
           context: ./
-          file: ./Dockerfile
+          file: ./Dockerfile-8-fpm
           builder: ${{ steps.buildx.outputs.name }}
           platforms: linux/amd64,linux/arm64/v8
           cache-from: type=local,src=/tmp/.buildx-cache
           cache-to: type=local,dest=/tmp/.buildx-cache
           push: true
-          tags: koalaphils/wordpress:latest
+          tags: koalaphils/wordpress:8-fpm
+      - name: Wordpress 7.4 FPM
+        uses: docker/build-push-action@v2
+        with:
+          context: ./
+          file: ./Dockerfile-7.4-fpm
+          builder: ${{ steps.buildx.outputs.name }}
+          platforms: linux/amd64,linux/arm64/v8
+          cache-from: type=local,src=/tmp/.buildx-cache
+          cache-to: type=local,dest=/tmp/.buildx-cache
+          push: true
+          tags: koalaphils/wordpress:7.4-fpm
