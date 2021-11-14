@@ -1,13 +1,19 @@
 FROM koalaphils/php:8-fpm
 
-LABEL maintainer="admin@koalaphils.com" \
-    version="2.0" \
-    description="Automated plugins and themes installation for WordPress"
+LABEL description="Automated plugins and themes installation for WordPress" \
+     "com.koalaphils.vendor"="Koala Software Technology Innovations" \
+     "com.koalaphils.image.author"="mdprotacio@outlook.com"
+
 RUN apt-get update \
   && apt-get install -y --no-install-recommends \
     cron \
     rsync \
-  && docker-php-ext-install -j "$(nproc)" mysqli \
+  ; docker-php-ext-install -j "$(nproc)" \
+    mysqli \
+    pdo_mysql \
+    zip \
+  ; docker-php-ext-enable \
+    imagick \
   ;
 COPY opt/php/*.ini /usr/local/etc/php/conf.d/
 COPY --from=wordpress:cli /usr/local/bin/wp /usr/local/bin/wp
