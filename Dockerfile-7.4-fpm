@@ -8,12 +8,22 @@ RUN apt-get update \
   && apt-get install -y --no-install-recommends \
     cron \
     rsync \
+  ; \
+  apt-mark manual '.*' > /dev/null; \
+  savedAptMark="$(apt-mark showmanual)"; \
+  apt-get install -y --no-install-recommends \
+    libzip-dev \
   ; docker-php-ext-install -j "$(nproc)" \
     mysqli \
     pdo_mysql \
     zip \
   ; docker-php-ext-enable \
     imagick \
+  ; \
+  apt-mark auto '.*' > /dev/null; \
+  [ -z "$savedAptMark" ] || apt-mark manual $savedAptMark; \
+  apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImport=false; \
+  rm -rf /tmp/* ~/.pearrc /var/lib/apt/lists/* /var/cache/* \
   ;
 COPY opt/php/*.ini /usr/local/etc/php/conf.d/
 COPY --from=wordpress:cli /usr/local/bin/wp /usr/local/bin/wp
