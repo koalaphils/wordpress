@@ -47,8 +47,8 @@ jobs:
           file: ./Dockerfile-8-fpm
           builder: ${{ steps.buildx.outputs.name }}
           platforms: linux/amd64,linux/arm64/v8
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
+          cache-from: type=registry,ref=ghcr.io/${{ github.repository_owner }}/cache/wordpress:8-fpm
+          cache-to: type=registry,mode=max,ref=ghcr.io/${{ github.repository_owner }}/cache/wordpress:8-fpm
           push: true
           tags: |
             ${{ github.repository_owner }}/wordpress:8-fpm
@@ -60,8 +60,8 @@ jobs:
           file: ./Dockerfile-7.4-fpm
           builder: ${{ steps.buildx.outputs.name }}
           platforms: linux/amd64,linux/arm64/v8
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
+          cache-from: type=registry,ref=ghcr.io/${{ github.repository_owner }}/cache/wordpress:7.4-fpm
+          cache-to: type=registry,mode=max,ref=ghcr.io/${{ github.repository_owner }}/cache/wordpress:7.4-fpm
           push: true
           tags: |
             ${{ github.repository_owner }}/wordpress:7.4-fpm
