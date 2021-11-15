@@ -1,8 +1,10 @@
 services:
   wordpress:
     build:
-      dockerfile: Dockerfile-7.4-fpm
-      context: . 
+      dockerfile: Dockerfile-fpm
+      context: .
+      args:
+        PHP_VERSION: 7.4
     restart: unless-stopped
     environment:
       WORDPRESS_DB_HOST: db
