@@ -30,8 +30,11 @@ COPY --from=wordpress:fpm /usr/local/bin/docker-entrypoint.sh /usr/local/bin/doc
 
 RUN sed -i 's/exec\s*\"\$\@\"/source \/usr\/local\/bin\/post-install.sh/g' /usr/local/bin/docker-entrypoint.sh
 COPY post-install.sh /usr/local/bin/post-install.sh
-ONBUILD COPY themes /usr/src/themes
-ONBUILD COPY plugins /usr/src/plugins
+COPY themes /usr/src/themes
+COPY plugins /usr/src/plugins
+
+VOLUME /usr/src/themes
+VOLUME /usr/src/plugins
 
 ENTRYPOINT ["docker-entrypoint.sh"]
 CMD ["php-fpm"]
