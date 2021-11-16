@@ -1,5 +1,5 @@
 ARG PHP_VERSION=8
-FROM koalaphils/php:${PHP_VERSION}-fpm
+FROM ghcr.io/koalaphils/php:${PHP_VERSION}-fpm
 
 LABEL org.opencontainers.image.description="Automated plugins and themes installation for WordPress" \
      "com.koalaphils.vendor"="Koala Software Technology Innovations" \
