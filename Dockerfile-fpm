@@ -5,6 +5,18 @@ LABEL org.opencontainers.image.description="Automated plugins and themes install
      "com.koalaphils.vendor"="Koala Software Technology Innovations" \
      "com.koalaphils.image.author"="mdprotacio@outlook.com"
 
+COPY opt/php/*.ini $PHP_INI_DIR/conf.d/
+COPY --from=wordpress:cli /usr/local/bin/wp /usr/local/bin/wp
+COPY --from=wordpress:fpm /usr/src /usr/src
+COPY --from=wordpress:fpm /usr/local/bin/docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
+COPY post-install.sh /usr/local/bin/post-install.sh
+COPY themes /usr/src/themes
+COPY plugins /usr/src/plugins
+RUN sed -i 's/exec\s*\"\$\@\"/source \/usr\/local\/bin\/post-install.sh/g' /usr/local/bin/docker-entrypoint.sh
+
+VOLUME /usr/src/themes
+VOLUME /usr/src/plugins
+
 RUN apt-get update \
   && apt-get install -y --no-install-recommends \
     cron \
@@ -20,21 +32,17 @@ RUN apt-get update \
   ; \
   apt-mark auto '.*' > /dev/null; \
   [ -z "$savedAptMark" ] || apt-mark manual $savedAptMark; \
+  find /usr/local -type f -executable -exec ldd '{}' ';' \
+      | awk '/=>/ { print $(NF-1) }' \
+      | sort -u \
+      | xargs -r dpkg-query --search \
+      | cut -d: -f1 \
+      | sort -u \
+      | xargs -r apt-mark manual \
+  ; \
   apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImport=false; \
   rm -rf /tmp/* ~/.pearrc /var/lib/apt/lists/* /var/cache/* \
   ;
-COPY opt/php/*.ini $PHP_INI_DIR/conf.d/
-COPY --from=wordpress:cli /usr/local/bin/wp /usr/local/bin/wp
-COPY --from=wordpress:fpm /usr/src /usr/src
-COPY --from=wordpress:fpm /usr/local/bin/docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
-
-RUN sed -i 's/exec\s*\"\$\@\"/source \/usr\/local\/bin\/post-install.sh/g' /usr/local/bin/docker-entrypoint.sh
-COPY post-install.sh /usr/local/bin/post-install.sh
-COPY themes /usr/src/themes
-COPY plugins /usr/src/plugins
-
-VOLUME /usr/src/themes
-VOLUME /usr/src/plugins
 
 ENTRYPOINT ["docker-entrypoint.sh"]
 CMD ["php-fpm"]
