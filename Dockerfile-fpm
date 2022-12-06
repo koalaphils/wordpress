@@ -24,11 +24,15 @@ RUN apt-get update \
   ; \
   apt-mark manual '.*' > /dev/null; \
   savedAptMark="$(apt-mark showmanual)"; \
-  docker-php-ext-install -j "$(nproc)" \
-    mysqli \
-    pdo_mysql \
-  ; docker-php-ext-enable \
+  docker-php-ext-enable \
+    event \
     imagick \
+    memcached \
+    mysqli \
+    opcache \
+    pcntl \
+    pdo_mysql \
+    redis \
   ; \
   apt-mark auto '.*' > /dev/null; \
   [ -z "$savedAptMark" ] || apt-mark manual $savedAptMark; \
